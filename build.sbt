@@ -8,6 +8,7 @@ resolvers += "ImageJ" at "http://maven.imagej.net/content/repositories/thirdpart
 
 libraryDependencies ++= Seq(
   "org.wikipedia" % "wiki-java" % "0.31",
-  "net.openhft" % "chronicle-map" % "3.14.5"
+  "net.openhft" % "chronicle-map" % "3.14.5",
+  "com.github.tototoshi" %% "scala-csv" % "1.3.4"
 )
 

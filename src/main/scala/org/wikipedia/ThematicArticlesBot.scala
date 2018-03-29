@@ -1,5 +1,7 @@
 package org.wikipedia
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
 import java.util
 import java.util.{Calendar, GregorianCalendar}
 
@@ -72,6 +74,13 @@ object ThematicArticlesBot {
         }
     }
     val articles = articleSet.toArray(new Array[ThematicArticle](articleSet.size))
+    val csv = makeCsv(articles).toString
+    Files.write(Paths.get("file.csv"), csv.getBytes(StandardCharsets.UTF_8))
+  }
+
+  def makeCsv(articles: Seq[ThematicArticle])= {
+    val seq = Seq("article", "user", "size") +: articles.map(a => Seq(a.title, a.user, a.size.toString))
+    Csv.writeStringBuffer(Csv.addBom(seq))
   }
 
 
