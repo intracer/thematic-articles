@@ -29,7 +29,7 @@ object ThematicArticlesBot {
   }
 
   def getUserName(text: String): Option[String] = {
-    if (text.matches(TemplateRegex)) Some(text.replaceAll(TemplateRegex, "$1").trim)
+    if (text.matches(TemplateRegex)) Some(fixUserName(text.replaceAll(TemplateRegex, "$1").trim))
     else None
   }
 
@@ -41,6 +41,12 @@ object ThematicArticlesBot {
   def getPageId(title: String)(implicit w: Wiki): String = {
     val articleInfo = w.getPageInfo(title)
     articleInfo.get("pageid").toString
+  }
+
+  def fixUserName(name: String): String = {
+    if (name.contains("|")) {
+      name.split("\\|").last.replaceAll("\\]", "")
+    } else name
   }
 
   def main(args: Array[String]): Unit = {
