@@ -2,8 +2,8 @@ package org.wikipedia.cache
 
 import java.io.File
 
-import contest.Wiki
 import net.openhft.chronicle.map.ChronicleMap
+import org.wikipedia.Wiki
 
 trait CachedWiki  {
   self: Wiki =>
