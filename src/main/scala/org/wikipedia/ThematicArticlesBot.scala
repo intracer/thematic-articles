@@ -9,11 +9,11 @@ import org.wikipedia.cache.CachedWiki
 
 object ThematicArticlesBot {
 
-  val TemplateName = "Скандинавська весна"
+  val TemplateName = "Пишемо про інформаційну безпеку"
   val TemplateRegex = "(?s).*\\{\\{\\s*" + TemplateName + "[|](.*?)\\}}.*"
 
-  val StartTime = getCalendar(2018, 2, 28, 20, 59, 59)
-  val EndTime = getCalendar(2018, 3, 31, 20, 59, 59)
+  val StartTime = getCalendar(2018, 3, 31, 20, 59, 59)
+  val EndTime = getCalendar(2018, 4, 30, 20, 59, 59)
 
   def getCalendar(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int): GregorianCalendar = {
     val time = new GregorianCalendar
@@ -46,9 +46,14 @@ object ThematicArticlesBot {
   }
 
   def fixUserName(name: String): String = {
-    if (name.contains("|")) {
-      name.split("\\|").last.replaceAll("\\]", "")
-    } else name
+    val splitted = if (name.contains("|")) {
+      name.split("\\|").last
+    } else if (name.contains(":")) {
+      name.split("\\:").last
+    } else
+      name
+
+    splitted.replaceAll("\\]", "")
   }
 
   def main(args: Array[String]): Unit = {
@@ -78,7 +83,7 @@ object ThematicArticlesBot {
     Files.write(Paths.get("file.csv"), csv.getBytes(StandardCharsets.UTF_8))
   }
 
-  def makeCsv(articles: Seq[ThematicArticle])= {
+  def makeCsv(articles: Seq[ThematicArticle]) = {
     val seq = Seq("article", "user", "size") +: articles.map(a => Seq(a.title, a.user, a.size.toString))
     Csv.writeStringBuffer(Csv.addBom(seq))
   }
