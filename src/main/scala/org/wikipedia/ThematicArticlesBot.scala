@@ -46,14 +46,25 @@ object ThematicArticlesBot {
   }
 
   def fixUserName(name: String): String = {
-    val splitted = if (name.contains("|")) {
-      name.split("\\|").last
-    } else if (name.contains(":")) {
-      name.split("\\:").last
-    } else
-      name
+    val linked = if (name.contains("|")) {
+      val parts = name.split("\\|")
+      val head = parts.head
+      val tail = parts.last
+      if (head.contains(":")) {
+        head
+      } else {
+        tail
+      }
+    } else name
 
-    splitted.replaceAll("\\]", "")
+    val noNamespace = if (linked.contains(":")) {
+      linked.split("\\:").last
+    } else linked
+
+    noNamespace
+      .replaceAll("\\]", "")
+      .replaceAll("\\[", "")
+      .trim
   }
 
   def main(args: Array[String]): Unit = {
